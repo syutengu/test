@@ -1,7 +1,3 @@
-const div = document.createElement('div')
-div.innerText = 'hello world'
-document.body.append(div)
-
 const SVGTAGS = 'svg,foreignObject,href,circle,rect,g,defs,line,path,polygon,polyline,text,use,symbol,textPath,tspan,image,strokeWidth,fontFamily'.split(',')
 
 
@@ -499,8 +495,4 @@ class Dom {
   }
 }
 
-alert(this)
-
-this.make = (type, pathName, className, options) => {
-    return new Dom(this, type, pathName, className, options)
-}
+new Dom(this,'div','div').text('hello world')
