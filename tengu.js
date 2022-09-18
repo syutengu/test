@@ -1,4 +1,9 @@
+const div = document.createElement('div')
+div.innerText = 'hello world'
+document.body.append(div)
+
 const SVGTAGS = 'svg,foreignObject,href,circle,rect,g,defs,line,path,polygon,polyline,text,use,symbol,textPath,tspan,image,strokeWidth,fontFamily'.split(',')
+
 
 //通过路径字符串获取对象深层属性 get property by path
 Object.prototype.p = function (path) {
