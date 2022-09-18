@@ -496,5 +496,5 @@ window.$ = class Dom {
 
 
 document.body.make = (type, pathName, className, options) => {
-    return new Dom(window, type, pathName, className, options)
+    return new Dom(this, type, pathName, className, options)
 }
