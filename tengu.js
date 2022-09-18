@@ -493,3 +493,5 @@ class Dom {
     })
   }
 }
+
+console.log(this)
