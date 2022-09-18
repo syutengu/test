@@ -494,6 +494,7 @@ window.$ = class Dom {
   }
 }
 
+alert(this)
 
 this.make = (type, pathName, className, options) => {
     return new Dom(this, type, pathName, className, options)
