@@ -493,3 +493,5 @@ class Dom {
     })
   }
 }
+
+new Dom(window, 'main').text('hello world')
