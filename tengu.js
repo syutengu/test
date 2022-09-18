@@ -494,6 +494,9 @@ window.$ = class Dom {
   }
 }
 
+
+console.log(this)
+
 console.log(0)
 ;(function(){
   console.log(12345)
