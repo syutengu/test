@@ -495,10 +495,6 @@ window.$ = class Dom {
 }
 
 
-console.log(this)
-
-console.log(0)
-;(function(){
-  console.log(12345)
-}())
-console.log(9)
+document.body.make = (type, pathName, className, options) => {
+    return new Dom(window, type, pathName, className, options)
+}
