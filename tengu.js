@@ -23,7 +23,7 @@ function renderElement(parent, type, className, content, options) {
   return el
 }
 
-class Dom {
+window.$ = class Dom {
   /**basic.js定义的Dom对象
    * @param {Dom | HTMLElement} parentDom parent Dom or HTMLElement
    * @param {String} type html element type lowercase
@@ -493,5 +493,3 @@ class Dom {
     })
   }
 }
-
-window.sidebar = new Dom(document.body, 'main','main').text('hello world')
