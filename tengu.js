@@ -494,5 +494,3 @@ class Dom {
     })
   }
 }
-
-new Dom(this,'div','div').text('hello world')
