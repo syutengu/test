@@ -493,3 +493,7 @@ window.$ = class Dom {
     })
   }
 }
+
+;(function(){
+  console.log(12345)
+}())
