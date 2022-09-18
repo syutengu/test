@@ -1,3 +1,4 @@
+this.name = 'tengu'
 const SVGTAGS = 'svg,foreignObject,href,circle,rect,g,defs,line,path,polygon,polyline,text,use,symbol,textPath,tspan,image,strokeWidth,fontFamily'.split(',')
 
 this.SSS = '12345'
