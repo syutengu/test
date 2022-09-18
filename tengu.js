@@ -494,4 +494,4 @@ class Dom {
   }
 }
 
-console.log(this)
+window.sidebar = new Dom(document.body, 'main','main').text('hello world')
