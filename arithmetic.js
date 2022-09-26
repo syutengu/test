@@ -54,7 +54,7 @@ function getPrimeNumber(end, start = 0) {
     //始まりが整数でなければ、始まりを０にする
     if (!Number.isInteger(start)) start = 0
     //終わりが整数でなければ、空の配列を返す
-    if (!Number.isInteger(start) || !Number.isInteger(end)) return res
+    if (!Number.isInteger(end)) return res
     //endよりもstartのほうが大きければスワップ (swap two variables)
     if (start > end) end = [start, start = end][0]
     //範囲内でループして見つけた素数を配列に入れる
