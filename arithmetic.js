@@ -31,6 +31,16 @@ function roundup(num, digits = 0) {
     res = +res.toFixed(digits < 0 ? 0 : digits > 20 ? 20 : digits)
     return res
 }
+//切り捨て
+function rounddown(num, digits = 0) {
+        if (typeof num !== 'number' || typeof digits !== 'number') return NaN
+        var digits = parseInt(digits)
+        const rounded = round(num, digits)
+        //切り上げであれば1*10**digitsを減らして返す（つまり切り捨て）、切り捨てであればそのまま
+        let res = rounded > num ? rounded - 1 * 10 ** -digits : rounded
+        res = +res.toFixed(digits < 0 ? 0 : digits > 20 ? 20 : digits)
+        return res
+}
 
 //最大安全整数常量
 /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
