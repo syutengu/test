@@ -1,3 +1,24 @@
+
+/**四捨五入
+ * 
+ * @param {Number} num 
+ * @param {Integer} digits 
+ */
+function round(num, digits) {
+    return parseInt(num * 10 ** digits + .5) / 10 ** digits
+}
+//切り上げ
+function roundup(num, digits) {
+    const a = 0.999999999999999
+    return parseInt(num * 10 ** digits + a) / 10 ** digits
+}
+
+//javascriptの数字制度は53ビットまで
+// console.log(2**53 === 2**53 - 1)//false　区別可能
+// console.log(2**53 === 2**53 + 1)//true 区別不能
+console.log(0.999999999999999 === 1)
+
+
 /**配列は魔方陣かどうかを判断
  * @param {Array} arr 配列で入力
  * @returns {Boolean} 真偽を返す
