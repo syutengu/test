@@ -31,10 +31,10 @@ https://github.com/adobe-fonts/source-han-sans/blob/master/README-JP.md
 - リスト2
 - リスト3
 
-`
+```
 //nの階乗
 function factorialize(n) {
     return n < 0 ? n : n === 0 ? 1 : n * factorialize(n - 1)
 }
 // console.log(factorialize(16))
-`
+```
