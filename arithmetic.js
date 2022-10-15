@@ -1,22 +1,47 @@
-
 /**四捨五入
- * 
  * @param {Number} num 
- * @param {Integer} digits 
+ * @param {Number} digits 
  */
-function round(num, digits) {
-    return parseInt(num * 10 ** digits + .5) / 10 ** digits
+function round(num, digits = 0) {
+    //validate
+    if (typeof num !== 'number' || typeof digits !== 'number') return NaN
+    var digits = parseInt(digits)
+    //handling
+    let res = parseInt(num * 10 ** digits + .5) / 10 ** digits
+    return res
 }
 //切り上げ
-function roundup(num, digits) {
-    const a = 0.999999999999999
-    return parseInt(num * 10 ** digits + a) / 10 ** digits
+function roundup(num, digits = 0) {
+    //validate
+    if (typeof num !== 'number' || typeof digits !== 'number') return NaN
+    var digits = parseInt(digits)
+    //まず四捨五入
+    const rounded = round(num, digits)
+    //切り上げであればそのまま、切り捨てであれば1*10**digitsを足して返す（つまり切り上げ）
+    let res = rounded < num ? rounded + 1 * 10 ** -digits : rounded
+    //0.1 + 0.2 -> 0.30000000000000004 javascriptの小数計算の誤差を補正するためにNumber.toFixed()メソッドを使用
+    // 小数計算の誤差　https://blog.apar.jp/program/8900/
+    // IEEE Standard for Floating-Point Arithmetic　二进制浮点数算术标准　 https://ja.wikipedia.org/wiki/IEEE_754
+    // https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed
+    /* The number of digits to appear after the decimal point; 
+    this may be a value between 0 and 20, inclusive, 
+    and implementations may optionally support a larger range of values. 
+    If this argument is omitted, it is treated as 0. */
+    //返り値を指定の精度まで文字列化（以降は捨てる）してさらに数値化して返す
+    res = +res.toFixed(digits < 0 ? 0 : digits > 20 ? 20 : digits)
+    return res
 }
 
-//javascriptの数字制度は53ビットまで
-// console.log(2**53 === 2**53 - 1)//false　区別可能
-// console.log(2**53 === 2**53 + 1)//true 区別不能
-console.log(0.999999999999999 === 1)
+//最大安全整数常量
+/* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
+Double precision floating point format only has 52 bits to represent the mantissa, 
+so it can only safely represent integers between -(2**53 – 1) and 2**53 – 1. 
+"Safe" in this context refers to the ability to represent integers exactly and to compare them correctly. 
+For example, Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2 will evaluate to true, which is mathematically incorrect. */
+console.log(Number.MAX_SAFE_INTEGER)// expected output: 9007199254740991
+console.log(Number.MAX_SAFE_INTEGER + 1)// expected output: 9007199254740992
+console.log(Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2)// expected output: true
+// 100.999999999999999 === 101 //true
 
 
 /**配列は魔方陣かどうかを判断
