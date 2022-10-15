@@ -1,5 +1,8 @@
 # arithmetic.js
-算数問答
+[算数問答](https://github.com/syutengu/test/blob/master/arithmetic.js)
+
+
+---
 
 # memo
 ## Miscellaneous
@@ -23,6 +26,11 @@ https://github.com/adobe-fonts/source-han-sans/blob/master/README-JP.md
 'Source Han Code JP Light' ,Consolas, 'Courier New', monospace
 
 ## markdown記法
+
+normal **bold** normal
+
+~~取り消し線~~
+
 - リスト1
     - ネスト リスト1_1
         - ネスト リスト1_1_1
@@ -38,6 +46,8 @@ function factorialize(n) {
 }
 // console.log(factorialize(16))
 ~~~
+
+---
 
 |header1|header2|header3|
 |:--|--:|:--:|
