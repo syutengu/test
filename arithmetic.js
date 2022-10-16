@@ -210,14 +210,14 @@ function isMagicSquare(arr, strict = false) {
     if (diagonal1Sum !== sum || diagonal2Sum !== sum) return false
     return true
 }
-const t3Board = [244, 649, 82, 163, 325, 487, 568, 1, 406]//3*3広義
-const t3 = [8, 1, 6, 3, 5, 7, 4, 9, 2] //3*3
-const t4 = [1, 2, 15, 16, 13, 14, 3, 4, 12, 7, 10, 5, 8, 11, 6, 9] //4*4
-const t5 = [11, 24, 7, 20, 3, 4, 12, 25, 8, 16, 17, 5, 13, 21, 9, 10, 18, 1, 14, 22, 23, 6, 19, 2, 15] //5*5
-console.log(t3Board, isMagicSquare(t3Board, true))
-console.log(t3, isMagicSquare(t3, true))
-console.log(t4, isMagicSquare(t4, true))
-console.log(t5, isMagicSquare(t5, true))
+// const t3Broad = [244, 649, 82, 163, 325, 487, 568, 1, 406]//3*3広義
+// const t3 = [8, 1, 6, 3, 5, 7, 4, 9, 2] //3*3
+// const t4 = [1, 2, 15, 16, 13, 14, 3, 4, 12, 7, 10, 5, 8, 11, 6, 9] //4*4
+// const t5 = [11, 24, 7, 20, 3, 4, 12, 25, 8, 16, 17, 5, 13, 21, 9, 10, 18, 1, 14, 22, 23, 6, 19, 2, 15] //5*5
+// console.log(t3Broad, isMagicSquare(t3Broad, true))
+// console.log(t3, isMagicSquare(t3, true))
+// console.log(t4, isMagicSquare(t4, true))
+// console.log(t5, isMagicSquare(t5, true))
 
 // 配列は連続自然数かどうかを判断
 function isConsecutiveNaturalNumbers(arr) {
