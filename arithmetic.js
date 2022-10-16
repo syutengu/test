@@ -128,25 +128,25 @@ function isPrimeNumber(num) {
     return true
 }
 
-/**startからendまでの数から素数を見つける
+/**beginからendまでの数から素数を見つける
  * @param {Number} end 終わりの数
- * @param {Number} start 始まりの数
+ * @param {Number} begin 始まりの数
  * @return {Array} 見つけた素数の配列
  */
-function getPrimeNumber(end, start = 0) {
+function getPrimeNumber(end, begin = 0) {
     //返す結果の配列
     let res = []
     //整数化
-    var start = parseInt(start)
+    var begin = parseInt(begin)
     var end = parseInt(end)
     //始まりが整数でなければ、始まりを０にする
-    if (!Number.isInteger(start)) start = 0
+    if (!Number.isInteger(begin)) begin = 0
     //終わりが整数でなければ、空の配列を返す
     if (!Number.isInteger(end)) return res
-    //endよりもstartのほうが大きければスワップ (swap two variables)
-    if (start > end) end = [start, start = end][0]
+    //endよりもbeginのほうが大きければスワップ (swap two variables)
+    if (begin > end) end = [begin, begin = end][0]
     //範囲内でループして見つけた素数を配列に入れる
-    for (let i = start; i < end; i++) {
+    for (let i = begin; i < end; i++) {
         if (isPrimeNumber(i)) res.push(i)
     }
     //結果を返す
