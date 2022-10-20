@@ -1,3 +1,54 @@
+/**手形印紙税の分割
+ * @param {Number} VATExcluded 消費税抜きの課税対象金額
+ * @returns {Array} [[課税対象金額、枚数、印紙税額],[課税対象金額、枚数、印紙税額],...]
+ */
+function splitStampTax(VATExcluded, average = false) {
+    const unit = 10 ** 6 //課税対象金額の単位は百万円にする
+    let qty = +VATExcluded
+    if (isNaN(qty) || qty < 0) return
+    // 10万円未満	非課税
+    if (qty < 0.1 * unit) return [[qty, 1, 0]]//課税対象金額、枚数、印紙税額
+    // 10億円を超えるもの	20万円
+    if (qty > 1000 * unit) return [[qty, 1, 200000]]
+    // 10万円以上
+    const rank = [
+        [1, 200],//10万円以上100万円以下	200円
+        [2, 400],//100万円を超え200万円以下	400円
+        [3, 600],// 200万円を超え300万円以下	600円
+        [5, 1000],// 300万円を超え500万円以下	1千円
+        [10, 2000],// 500万円を超え1千万円以下	2千円
+        [20, 4000],// 1千万円を超え2千万円以下	4千円
+        [30, 6000],// 2千万円を超え3千万円以下	6千円
+        [50, 10000],// 3千万円を超え5千万円以下	1万円
+        [100, 20000],// 5千万円を超え1億円以下	2万円
+        [200, 40000],// 1億円を超え2億円以下	4万円
+        [300, 60000],// 2億円を超え3億円以下	6万円
+        [500, 100000],// 3億円を超え5億円以下	10万円
+        [1000, 150000],// 5億円を超え10億円以下	15万円
+    ]
+    //計算
+    let res = []
+    //方法1（等分割）
+    if (average) {
+        const b = Math.floor(qty / 2)//後半
+        const a = qty % 2 > 0 ? Math.ceil(qty / 2) : b //前半
+        res.push([a, rank.find(e => e[0] * unit >= a)[1]], [b, rank.find(e => e[0] * unit >= b)[1]])
+        return res
+    }
+    //方法2（大から小へ）
+    for (let i = rank.length - 1; i >= 0; i--) {
+        if (i === 0) {
+            res.push([qty, rank[0][1]])
+            break
+        }
+        const ceil = rank[i][0] * unit
+        res.push(...Array(Math.floor(qty / ceil)).fill([ceil, rank[i][1]]))
+        qty = qty % ceil
+    }
+    return res
+}
+// console.table(splitStampTax(9000001, true))
+
 /**四捨五入(４以下切り下げ、５以上切り上げ)
  * (num,digits)=>Math.round(num*10**digits)/10**digits　と同じ
  * @param {Number} num 
