@@ -12,10 +12,10 @@ function round(num, digits = 0) {
     let res = parseInt(num * 10 ** digits + .5 * sign) / 10 ** digits
     return res
 }
-// console.log(round(1.23456789,2))//return 1.23
-// console.log(round(-1.23456789,2))//return -1.23
-// console.log(round(9.87654321,2))//return 9.88
-// console.log(round(-9.87654321,2))//return -9.88
+// console.log(round(1.3))//return 1
+// console.log(round(-1.3))//return -1
+// console.log(round(1.7))//return 2
+// console.log(round(-1.7))//return -2
 
 /**切り上げ
  * (num,digits)=>Math.ceil(num*10**digits)/10**digits　と同じ
@@ -28,7 +28,7 @@ function roundup(num, digits = 0) {
     var digits = parseInt(digits)
     //まず四捨五入
     const rounded = round(num, digits)
-    console.log(num, num > rounded ? '>' : '<', rounded)
+    // console.log(num, num > rounded ? '>' : '<', rounded)
     let res
     //四捨五入の結果が切り下げとなれば、+/-1*10**-digitsで補正
     if (num >= 0) res = num > rounded ? rounded + 1 * 10 ** -digits : rounded//正数
@@ -45,10 +45,10 @@ function roundup(num, digits = 0) {
     res = +res.toFixed(digits < 0 ? 0 : digits > 20 ? 20 : digits)
     return res
 }
-// console.log(roundup(1.23456789, 2))//return 1.24
-// console.log(roundup(-1.23456789, 2))//return -1.24
-// console.log(roundup(9.87654321, 2))//return 9.88
-// console.log(roundup(-9.87654321, 2))//return -9.88
+// console.log(roundup(1.3))//return 2
+// console.log(roundup(-1.3))//return -2
+// console.log(roundup(1.7))//return 2
+// console.log(roundup(-1.7))//return -2
 
 /**切り捨て（EXCEL関数ROUNDDOWN風に、正負とも同じ数字を出すために）
  * (num,digits)=>Math.trunc(num*10**digits)/10**digits　切り捨てと同じ
@@ -68,10 +68,10 @@ function rounddown(num, digits = 0) {
     res = +res.toFixed(digits < 0 ? 0 : digits > 20 ? 20 : digits)
     return res
 }
-// console.log(rounddown(1.23456789, 2))//return 1.23
-// console.log(rounddown(-1.23456789, 2))//return -1.23
-// console.log(rounddown(9.87654321, 2))//return 9.87
-// console.log(rounddown(-9.87654321, 2))//return -9.87
+console.log(rounddown(1.3))//return 1
+console.log(rounddown(-1.3))//return -1
+console.log(rounddown(1.7))//return 1
+console.log(rounddown(-1.7))//return -1
 
 //最大安全整数定数
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
