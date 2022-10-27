@@ -27,7 +27,7 @@ function clickHandler() {
 function sendMail() {
   //メール内容
   //宛先メールアドレス
-  let recipient = "syutengu@gmail.com"
+  let recipient = "@gmail.com"
   //件名
   let subject = "テストです"
   //本文
@@ -44,7 +44,7 @@ function sendMail() {
 }
 
 function writeData(data) {
-  if (!Array.isArray(data)) return console.log('data is not array type')
+  if (!Array.isArray(data)) return console.log('type of data is not array')
   const rawQty = data.length
   const clmQty = data[0]?.length
   const sheet = SpreadsheetApp.getActive().getSheetByName('dst')
