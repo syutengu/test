@@ -54,4 +54,7 @@ function factorialize(n) {
 |align left|align right|align center|
 |a|b|c|
 
+- [ ] item1
+- [x] item2
+
 1xaouO0SP3W2T2fZdxOoquGNaSl32gf2WW6vv2L5qBng
