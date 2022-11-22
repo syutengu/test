@@ -19,6 +19,7 @@ if($arr.count -eq 3 -and $arr[0] -match $regex) {ren $_ -NewName "$res.txt"}
 # Alias
 ## google
 md C:\Users\〇〇〇〇\documents\WindowsPowerShell
+
 Microsoft.PowerShell_profile.ps1
 
 Set-Alias google "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
