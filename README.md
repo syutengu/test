@@ -1,3 +1,6 @@
+# powershell
+[PWSH](https://github.com/syutengu/test/blob/master/pwsh.md)
+
 # arithmetic.js
 [算数問答](https://github.com/syutengu/test/blob/master/arithmetic.js)
 
