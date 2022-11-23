@@ -1,4 +1,6 @@
-# 批量重命名
+# POWERSHELL
+
+## 批量重命名
 
 ~~~powershell
 # 正则六位日期（适用范围000101-291231）
@@ -22,9 +24,11 @@ md C:\Users\〇〇〇〇\documents\WindowsPowerShell
 
 Microsoft.PowerShell_profile.ps1
 
+~~~powershell
 Set-Alias google "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
 function ggl(){
     google "https://www.google.com/search?q=$args"
 }
+~~~
 
-# Get-ExecutionPolicy/Set-ExecutionPolicy/RemoteSigned
+Get-ExecutionPolicy/Set-ExecutionPolicy/RemoteSigned
