@@ -1,3 +1,25 @@
+//求多个正整数的最大公约数
+function gcd() {
+    //求两数的最大公约数 greatest common divisor //gcd(999,777) -> return 111
+    //Euclidean Algorithm ユークリッドの互除法
+    function gcd2(a, b) {
+        if (b === 0) return a
+        return gcd2(b, a % b)
+    }
+    //对输入的参数逐一执行gcd2
+    return Object.values(arguments).filter(e=>!isNaN(e)).reduce((pre,cur,idx)=>gcd2(pre,cur))
+}
+
+//求多个正整数的最小公倍数
+function lcm(){
+    //求两数的最小公倍数 least common multiple
+    //最大公约数与最小公倍数的关系 lcm(a,b) = a*b/gcd(a,b)
+    function lcm2(a, b) {
+        return a * b / gcd(a, b)
+    }
+    return Object.values(arguments).filter(e=>!isNaN(e)).reduce((pre,cur,idx)=>lcm2(pre,cur))
+}
+
 /**手形印紙税の分割
  * @param {Number} VATExcluded 消費税抜きの課税対象金額
  * @returns {Array} [[課税対象金額、枚数、印紙税額],[課税対象金額、枚数、印紙税額],...]
