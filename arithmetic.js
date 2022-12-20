@@ -63,8 +63,8 @@ function splitStampTax(excluded) {
     //計算
     //SPLITTING 1 分割せず一枚
     let one = RANK.find(e => +excluded <= e[0])//課税対象金額がランク上限値以下である最初のランクを昇順で見つける
-    console.log(`■■■　SPLITTING 1 : 枚数 = 1 AND 印紙税額合計 = ${one[1]}`)
-    console.table(one)
+    console.log(`■■■　SPLITTING 1 : 枚数 = 1 AND 印紙税額合計 = ${one[1].toLocaleString()}`)
+    console.table([one.map(e=>e.toLocaleString())])
 
     //SPLITTING N ランク降順通りに可能な限り分割
     while (searchDescRank(qty)) {//見つからないまで繰り返す
@@ -75,12 +75,12 @@ function splitStampTax(excluded) {
     //残り値が100万円未満の場合、適用ランクが見つからずループ終了。残り値は10万円未満かどうかを判別して返り配列の末尾に追加
     if (qty > 0) arr.push([qty, qty < 100000 ? 0 : 200])
     //評価
-    console.log(`■■■　SPLITTING N : 枚数 = ${arr.length} AND 印紙税額合計 = ${arr.map(e => e[1]).reduce((a, b) => a + b)}`)
+    console.log(`■■■　SPLITTING N : 枚数 = ${arr.length} AND 印紙税額合計 = ${arr.map(e => e[1]).reduce((a, b) => a + b).toLocaleString()}`)
     //分割によって節約できた税額が分割によるコストを下回る場合、あえて分割しない
     profit = one[1] - arr.map(e => e[1]).reduce((a, b) => a + b)
     cost = COSTPERSHEET * (arr.length - 1)
-    console.log(`評価：節税額 = ${profit} AND 作業コスト = ${cost}, ${profit - cost > 0 ? '' : 'NOT'} WORTH SPLITTING N !`)
-    console.table(arr)
+    console.log(`評価：節税額 = ${profit.toLocaleString()} AND 作業コスト = ${cost.toLocaleString()}, ${profit - cost > 0 ? '' : 'NOT'} WORTH SPLITTING N !`)
+    console.table(arr.map(e=>e.map(f=>f.toLocaleString())))
     //結果更新
     if (profit <= cost) arr = [[+excluded, one[1]]]//利益がなければ分割しない
 
@@ -89,20 +89,20 @@ function splitStampTax(excluded) {
     const A = +excluded % 2 > 0 ? Math.ceil(+excluded / 2) : B //前半
     const BTAX = RANK.find(e => e[0] >= B)[1]//後半税額
     const ATAX = RANK.find(e => e[0] >= A)[1]//前半税額
-    console.log(`■■■　SPLITTING 2 : 枚数 = ${2} AND 印紙税額合計 = ${ATAX + BTAX}`)
+    console.log(`■■■　SPLITTING 2 : 枚数 = ${2} AND 印紙税額合計 = ${(ATAX + BTAX).toLocaleString()}`)
     //評価
     profit = arr.map(e => e[1]).reduce((a, b) => a + b) - (BTAX + ATAX)
     cost = COSTPERSHEET * (2 - arr.length)
-    console.log(`評価：節税額 = ${profit} AND 作業コスト = ${cost}, ${profit - cost > 0 ? '' : 'NOT'} WORTH SPLITTING 2 !`)
+    console.log(`評価：節税額 = ${profit.toLocaleString()} AND 作業コスト = ${cost.toLocaleString()}, ${profit - cost > 0 ? '' : 'NOT'} WORTH SPLITTING 2 !`)
     //結果更新
     //二(等)分割が現状よりもさらに利益が出る場合だけ、二(等)分割する
     if (profit - cost > 0) arr = [[A, ATAX], [B, BTAX]]
     //利益がこれ以上でないが現状より印紙の枚数を減らせるのであれば、二(等)分割する
     else if (profit === cost && arr.length > 2) arr = [[A, ATAX], [B, BTAX]]
-    console.table([[A, ATAX], [B, BTAX]])
+    console.table([[A, ATAX], [B, BTAX]].map(e=>e.map(f=>f.toLocaleString())))
 
-    console.log('■■■　結果：')
-    return arr
+    console.log('■■■　結果　■■■')
+    return arr.map(e=>e.map(f=>f.toLocaleString()))
 }
 console.table(splitStampTax(987654321))
 
