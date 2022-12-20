@@ -21,55 +21,90 @@ function lcm(){
 }
 
 /**手形印紙税の分割
- * @param {Number} VATExcluded 消費税抜きの課税対象金額
- * @returns {Array} [[課税対象金額、枚数、印紙税額],[課税対象金額、枚数、印紙税額],...]
- */
-function splitStampTax(VATExcluded, average = false) {
-    const unit = 10 ** 6 //課税対象金額の単位は百万円にする
-    let qty = +VATExcluded
+ * @param {Number} excluded 消費税抜きの課税対象金額
+ * @returns {Array} [[1st課税対象金額,1st印紙税額],[2nd課税対象金額,2nd印紙税額]...]
+ * 印紙税額の一覧表[約束手形または為替手形]
+ * https://www.nta.go.jp/taxes/shiraberu/taxanswer/inshi/7140.htm
+*/
+function splitStampTax(excluded) {
+    const COSTPERSHEET = 250 //印紙作成一枚あたりのコスト
+    let profit //分割による節税額
+    let cost //分割による作業コスト増
+    let arr = []//返り配列
+    let qty = +excluded//消費税抜き課税対象金額(の計算時残り値)
+
     if (isNaN(qty) || qty < 0) return
-    // 10万円未満	非課税
-    if (qty < 0.1 * unit) return [[qty, 1, 0]]//課税対象金額、枚数、印紙税額
-    // 10億円を超えるもの	20万円
-    if (qty > 1000 * unit) return [[qty, 1, 200000]]
-    // 10万円以上
-    const rank = [
-        [1, 200],//10万円以上100万円以下	200円
-        [2, 400],//100万円を超え200万円以下	400円
-        [3, 600],// 200万円を超え300万円以下	600円
-        [5, 1000],// 300万円を超え500万円以下	1千円
-        [10, 2000],// 500万円を超え1千万円以下	2千円
-        [20, 4000],// 1千万円を超え2千万円以下	4千円
-        [30, 6000],// 2千万円を超え3千万円以下	6千円
-        [50, 10000],// 3千万円を超え5千万円以下	1万円
-        [100, 20000],// 5千万円を超え1億円以下	2万円
-        [200, 40000],// 1億円を超え2億円以下	4万円
-        [300, 60000],// 2億円を超え3億円以下	6万円
-        [500, 100000],// 3億円を超え5億円以下	10万円
-        [1000, 150000],// 5億円を超え10億円以下	15万円
+    //10万円未満	非課税
+    if (qty < 100000) return [[qty, 0]]
+    //10億円を超えるもの	20万円
+    if (qty > 1000000000) return [[qty, 200000]]
+    //昇順ランキング(10万円以上、10億円以下)
+    const RANK = [//[ランク上限値,該当印紙税額]
+        [1000000, 200],//10万円以上100万円以下	200円
+        [2000000, 400],//100万円を超え200万円以下	400円
+        [3000000, 600],// 200万円を超え300万円以下	600円
+        [5000000, 1000],// 300万円を超え500万円以下	1千円
+        [10000000, 2000],// 500万円を超え1千万円以下	2千円
+        [20000000, 4000],// 1千万円を超え2千万円以下	4千円
+        [30000000, 6000],// 2千万円を超え3千万円以下	6千円
+        [50000000, 10000],// 3千万円を超え5千万円以下	1万円
+        [100000000, 20000],// 5千万円を超え1億円以下	2万円
+        [200000000, 40000],// 1億円を超え2億円以下	4万円
+        [300000000, 60000],// 2億円を超え3億円以下	6万円
+        [500000000, 100000],// 3億円を超え5億円以下	10万円
+        [1000000000, 150000],// 5億円を超え10億円以下	15万円
     ]
+    //降順ランキング
+    const DESCRANK = [...RANK].reverse()
+
+    //入力値が上限値以上のランクを降順で見つけて返す
+    var searchDescRank = (q) => DESCRANK.find(e => q >= e[0])
+
     //計算
-    let res = []
-    //方法1（等分割）
-    if (average) {
-        const b = Math.floor(qty / 2)//後半
-        const a = qty % 2 > 0 ? Math.ceil(qty / 2) : b //前半
-        res.push([a, rank.find(e => e[0] * unit >= a)[1]], [b, rank.find(e => e[0] * unit >= b)[1]])
-        return res
+    //SPLITTING 1 分割せず一枚
+    let one = RANK.find(e => +excluded <= e[0])//課税対象金額がランク上限値以下である最初のランクを昇順で見つける
+    console.log(`■■■　SPLITTING 1 : 枚数 = 1 AND 印紙税額合計 = ${one[1]}`)
+    console.table(one)
+
+    //SPLITTING N ランク降順通りに可能な限り分割
+    while (searchDescRank(qty)) {//見つからないまで繰り返す
+        const res = searchDescRank(qty)//入力値（課税対象金額の残り値）が上限値以上のランクを降順で見つけて返す
+        arr.push(res)//配列に追加
+        qty -= res[0]//課税対象金額の残り値を更新
     }
-    //方法2（大から小へ）
-    for (let i = rank.length - 1; i >= 0; i--) {
-        if (i === 0) {
-            res.push([qty, rank[0][1]])
-            break
-        }
-        const ceil = rank[i][0] * unit
-        res.push(...Array(Math.floor(qty / ceil)).fill([ceil, rank[i][1]]))
-        qty = qty % ceil
-    }
-    return res
+    //残り値が100万円未満の場合、適用ランクが見つからずループ終了。残り値は10万円未満かどうかを判別して返り配列の末尾に追加
+    if (qty > 0) arr.push([qty, qty < 100000 ? 0 : 200])
+    //評価
+    console.log(`■■■　SPLITTING N : 枚数 = ${arr.length} AND 印紙税額合計 = ${arr.map(e => e[1]).reduce((a, b) => a + b)}`)
+    //分割によって節約できた税額が分割によるコストを下回る場合、あえて分割しない
+    profit = one[1] - arr.map(e => e[1]).reduce((a, b) => a + b)
+    cost = COSTPERSHEET * (arr.length - 1)
+    console.log(`評価：節税額 = ${profit} AND 作業コスト = ${cost}, ${profit - cost > 0 ? '' : 'NOT'} WORTH SPLITTING N !`)
+    console.table(arr)
+    //結果更新
+    if (profit <= cost) arr = [[+excluded, one[1]]]//利益がなければ分割しない
+
+    //SPLITTING 2 二(等)分割
+    const B = Math.floor(+excluded / 2)//後半
+    const A = +excluded % 2 > 0 ? Math.ceil(+excluded / 2) : B //前半
+    const BTAX = RANK.find(e => e[0] >= B)[1]//後半税額
+    const ATAX = RANK.find(e => e[0] >= A)[1]//前半税額
+    console.log(`■■■　SPLITTING 2 : 枚数 = ${2} AND 印紙税額合計 = ${ATAX + BTAX}`)
+    //評価
+    profit = arr.map(e => e[1]).reduce((a, b) => a + b) - (BTAX + ATAX)
+    cost = COSTPERSHEET * (2 - arr.length)
+    console.log(`評価：節税額 = ${profit} AND 作業コスト = ${cost}, ${profit - cost > 0 ? '' : 'NOT'} WORTH SPLITTING 2 !`)
+    //結果更新
+    //二(等)分割が現状よりもさらに利益が出る場合だけ、二(等)分割する
+    if (profit - cost > 0) arr = [[A, ATAX], [B, BTAX]]
+    //利益がこれ以上でないが現状より印紙の枚数を減らせるのであれば、二(等)分割する
+    else if (profit === cost && arr.length > 2) arr = [[A, ATAX], [B, BTAX]]
+    console.table([[A, ATAX], [B, BTAX]])
+
+    console.log('■■■　結果：')
+    return arr
 }
-// console.table(splitStampTax(9000001, true))
+console.table(splitStampTax(987654321))
 
 /**四捨五入(４以下切り下げ、５以上切り上げ)
  * (num,digits)=>Math.round(num*10**digits)/10**digits　と同じ
