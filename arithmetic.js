@@ -1,3 +1,19 @@
+//斐波那契数列 Fibonacci sequence
+function fib(n) {
+    var n = Math.floor(n)
+    const fib = [0, 1]//手动设定定义第1，2项
+    if (n < 1) return []
+    if (fib[n - 1] !== undefined) return fib.slice(0, n)
+    while (fib[n - 1] === undefined) fib.push(fib[fib.length - 2] + fib[fib.length - 1])
+    return fib
+}
+console.log(fib(10)) //returns [0,1,1,2,3,5,8,13,21,34]
+
+//ālea iacta est
+function dice(num = 1, side = 6) {
+    return Array.from({ length: num }).map(e => Math.floor(Math.random() * side + 1))
+}
+
 //求多个正整数的最大公约数
 function gcd() {
     //求两数的最大公约数 greatest common divisor //gcd(999,777) -> return 111
